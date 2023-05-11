@@ -1,8 +1,11 @@
 
-import { useTheme, TextField, Grid, AppBar, Toolbar, Typography, Container, Button, colors, Card, CardContent } from '@mui/material';
+import { useTheme, TextField, Grid, AppBar, Toolbar, Typography, Container, Button, colors, Card, CardContent, Badge } from '@mui/material';
 import { ClipboardText, PlusCircle, Rocket } from "@phosphor-icons/react";
 import { styled } from '@mui/material/styles';
 import { useState } from 'react';
+import { CardTarefa } from './CardTarefa/inde.tsx';
+
+
 
 const CssTextField = styled(TextField)({
   '& label': {
@@ -28,10 +31,15 @@ const CssTextField = styled(TextField)({
 
 
 function App() {
-
-  const [cardLogica, setCardLogica] = useState(false)
-
   const theme = useTheme()
+
+  const [numTarefaCriada, setNumTarefaCriada] = useState(0)
+  const [numTarefaConcluida, setNumTarefaConcluida] = useState(0)
+
+
+
+
+
 
   return (
     <>
@@ -84,9 +92,36 @@ function App() {
 
       </main>
       <Container sx={{ paddingTop: '100px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '30px' }}>
-          <div><span style={{ color: '#52b2ec', fontSize: '20px', fontWeight: '600' }} >Tarefas criadas</span> 0</div>
-          <div><span style={{ color: '#5e60ce', fontSize: '20px', fontWeight: '600' }}>Concluidas</span> 0</div>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', margin: '0px 18px 30px 0px' }}>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '30px' }}>
+              <span style={{ color: '#52b2ec', fontSize: '20px', fontWeight: '600' }} >
+                Tarefas criadas
+              </span>
+              <Badge badgeContent={numTarefaCriada} sx={{
+                '& .MuiBadge-badge': {
+                  backgroundColor: '#383838', // Aqui você pode definir a cor de fundo desejada para o span interno
+                  textAlign: 'center',
+                  padding: '10px'
+                },
+
+              }} >  </Badge>
+            </div>
+          </div>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '30px' }}>
+              <span style={{ color: '#5e60ce', fontSize: '20px', fontWeight: '600' }}>
+                Concluidas
+              </span>
+              <Badge badgeContent={numTarefaConcluida} sx={{
+                '& .MuiBadge-badge': {
+                  backgroundColor: '#383838', // Aqui você pode definir a cor de fundo desejada para o span interno
+                  textAlign: 'center',
+                  padding: '10px'
+                }
+              }} >  </Badge>
+            </div>
+          </div>
         </div>
         <Grid container spacing={theme.spacing(1)} >
           <Grid item xl={12} xs={12}>
@@ -95,7 +130,7 @@ function App() {
               width: '100%',
               height: '55vh',
               borderRadius: '10px',
-
+              boxShadow: '0px 2px 10px 0px #343434'
             }}>
               <CardContent sx={{
                 display: 'flex',
@@ -105,9 +140,15 @@ function App() {
                 height: '100%',
                 backgroundColor: '#121212'
               }}>
-                <ClipboardText size={80} color={colors.grey[600]} />
+
+
+                <ClipboardText size={80} color={colors.grey[500]} />
                 <Typography variant='h6' color={colors.grey[600]}>Você ainda não tem tarefas cadastradas</Typography>
                 <Typography variant='h6' color={colors.grey[600]}>Crie tarefas e organize seus itens a fazer</Typography>
+
+
+
+
               </CardContent>
             </Card>
           </Grid>
