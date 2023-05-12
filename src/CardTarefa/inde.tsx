@@ -1,6 +1,5 @@
 import { useTheme, TextField, Grid, AppBar, Toolbar, Typography, Container, Button, colors, Card, CardContent, Checkbox } from '@mui/material';
 import { pink } from '@mui/material/colors';
-
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
 type CardTarefaProps = {
@@ -27,6 +26,8 @@ export function CardTarefa({ texto }: CardTarefaProps) {
           <Typography variant="h6" gutterBottom>
             {texto}
           </Typography>
+
+          <Button></Button>
         </CardContent>
       </Card>
     </>
