@@ -2,9 +2,10 @@
 import { useTheme, TextField, Grid, AppBar, Toolbar, Typography, Container, Button, colors, Card, CardContent, Badge, Checkbox } from '@mui/material';
 import { ClipboardText, PlusCircle, Rocket } from "@phosphor-icons/react";
 import { styled } from '@mui/material/styles';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CardTarefa } from './CardTarefa/inde.tsx';
-import DeleteIcon from '@mui/icons-material/Delete';
+import { Task } from './types/index.ts';
+
 
 
 
@@ -36,10 +37,12 @@ function App() {
 
   const [numTarefaCriada, setNumTarefaCriada] = useState(0)
   const [numTarefaConcluida, setNumTarefaConcluida] = useState(0)
+  const [tasks, setTasks] = useState<Task[]>()
 
 
+  useEffect(() => {
 
-
+  }, [])
 
 
   return (
@@ -147,16 +150,7 @@ function App() {
                 <Typography variant='h6' color={colors.grey[600]}>Você ainda não tem tarefas cadastradas</Typography>
                 <Typography variant='h6' color={colors.grey[600]}>Crie tarefas e organize seus itens a fazer</Typography> */}
 
-                <Card>
-                  <CardContent sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', }}>
-                    <Checkbox defaultChecked />
-                    <Typography m={0} variant="h6" gutterBottom>
-                      teste de tarefa 1
-                    </Typography>
-
-                    <Button sx={{ textAlign: 'center' }}><DeleteIcon /></Button>
-                  </CardContent>
-                </Card>
+                <CardTarefa />
 
 
               </CardContent>
