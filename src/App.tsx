@@ -2,10 +2,10 @@
 import { useTheme, TextField, Grid, AppBar, Toolbar, Typography, Container, Button, colors, Card, CardContent, Badge, Checkbox } from '@mui/material';
 import { ClipboardText, PlusCircle, Rocket } from "@phosphor-icons/react";
 import { styled } from '@mui/material/styles';
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { CardTarefa } from './CardTarefa/inde.tsx';
 import { Task } from './types/index.ts';
-
+import { save } from './service/api';
 
 
 
@@ -32,11 +32,12 @@ const CssTextField = styled(TextField)({
 });
 
 
+
 function App() {
   const theme = useTheme()
 
-  const [numTarefaCriada, setNumTarefaCriada] = useState(0)
-  const [numTarefaConcluida, setNumTarefaConcluida] = useState(0)
+
+  const [tasksi, setTasksi] = useState<string>('');
   const [tasks, setTasks] = useState<Task[]>()
 
 
@@ -44,9 +45,18 @@ function App() {
 
   }, [])
 
-
+  const saveNoBanco = () => {
+    const tsk = {
+      "description ": tasksi,
+      "done": "false"
+    }
+    save(tsk);
+    console.log(tsk)
+  }
   return (
+
     <>
+      {console.log(tasksi)}
       <AppBar position='static'>
         <Toolbar sx={{
           paddingTop: theme.spacing(2),
@@ -75,13 +85,13 @@ function App() {
             top: '-26px'
           }}>
             <Grid item xl={10} xs={12}>
-              <CssTextField name='tasks' variant='outlined' label='Task' placeholder='Adicione uma Nova tarefa' fullWidth sx={{
+              <CssTextField name='tasks' variant='outlined' label='Task' onChange={(e: ChangeEvent<HTMLInputElement>) => setTasksi(e.target.value)} placeholder='Adicione uma Nova tarefa' fullWidth sx={{
                 backgroundColor: colors.grey[900],
 
               }} />
             </Grid>
             <Grid item xl={2} xs={12} >
-              <Button variant='contained' name='tasks' fullWidth sx={{
+              <Button variant='contained' name='tasks' onClick={saveNoBanco} fullWidth sx={{
                 height: '100%',
                 backgroundColor: '#52b2ec',
                 '&:hover': {
@@ -102,7 +112,7 @@ function App() {
               <span style={{ color: '#52b2ec', fontSize: '20px', fontWeight: '600' }} >
                 Tarefas criadas
               </span>
-              <Badge badgeContent={numTarefaCriada} sx={{
+              <Badge sx={{
                 '& .MuiBadge-badge': {
                   backgroundColor: '#383838', // Aqui você pode definir a cor de fundo desejada para o span interno
                   textAlign: 'center',
@@ -117,7 +127,7 @@ function App() {
               <span style={{ color: '#5e60ce', fontSize: '20px', fontWeight: '600' }}>
                 Concluidas
               </span>
-              <Badge badgeContent={numTarefaConcluida} sx={{
+              <Badge sx={{
                 '& .MuiBadge-badge': {
                   backgroundColor: '#383838', // Aqui você pode definir a cor de fundo desejada para o span interno
                   textAlign: 'center',
@@ -150,7 +160,7 @@ function App() {
                 <Typography variant='h6' color={colors.grey[600]}>Você ainda não tem tarefas cadastradas</Typography>
                 <Typography variant='h6' color={colors.grey[600]}>Crie tarefas e organize seus itens a fazer</Typography> */}
 
-                <CardTarefa />
+                <CardTarefa texto={tasksi} />
 
 
               </CardContent>

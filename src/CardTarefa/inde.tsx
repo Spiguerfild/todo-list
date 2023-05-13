@@ -16,7 +16,7 @@ export function CardTarefa({ texto }: CardTarefaProps) {
         <CardContent sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', }}>
           <Checkbox defaultChecked />
           <Typography m={0} variant="h6" gutterBottom>
-            teste de tarefa 1
+            {texto}
           </Typography>
 
           <Button sx={{ textAlign: 'center' }}><DeleteIcon /></Button>
