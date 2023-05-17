@@ -2,18 +2,18 @@
   "tasks": [
     {
       "description": "tarefa 01",
-      "done ": "true",
+      "done": "true",
       "id": 1
     },
     {
-      "description ": "Tarefa 03",
-      "done": "false",
-      "id": 3
+      "description": "tarefa 2 ne vitao",
+      "done": false,
+      "id": 2
     },
     {
-      "description ": "a",
-      "done": "false",
-      "id": 4
+      "description": "apenas",
+      "done": false,
+      "id": 3
     }
   ]
 }

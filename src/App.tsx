@@ -5,7 +5,7 @@ import { styled } from '@mui/material/styles';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { CardTarefa } from './CardTarefa/inde.tsx';
 import { Task } from './types/index.ts';
-import { save } from './service/api';
+import { api, getAll, save } from './service/api';
 
 
 
@@ -32,31 +32,43 @@ const CssTextField = styled(TextField)({
 });
 
 
-
 function App() {
   const theme = useTheme()
 
 
   const [tasksi, setTasksi] = useState<string>('');
-  const [tasks, setTasks] = useState<Task[]>()
-
+  const [tasks, setTasks] = useState<Task[]>([])
+  const [teste, setTeste] = useState<any>()
 
   useEffect(() => {
-
-  }, [])
+    pegaDados();
+  }, [teste]);
 
   const saveNoBanco = () => {
     const tsk = {
-      "description ": tasksi,
-      "done": "false"
+      description: tasksi,
+      done: false
     }
+    setTeste(tsk)
     save(tsk);
-    console.log(tsk)
   }
+
+  const pegaDados = async () => {
+    try {
+      const { data } = await api.get('tasks');
+      setTasks(data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+
+
+  console.log(tasks)
   return (
 
     <>
-      {console.log(tasksi)}
+      {/* {console.log(tasksi)} */}
       <AppBar position='static'>
         <Toolbar sx={{
           paddingTop: theme.spacing(2),
@@ -65,6 +77,7 @@ function App() {
           justifyContent: 'center',
           alignItems: 'center',
           '@media all': {
+
             minHeight: 200,
           }
         }}>
@@ -160,8 +173,12 @@ function App() {
                 <Typography variant='h6' color={colors.grey[600]}>Você ainda não tem tarefas cadastradas</Typography>
                 <Typography variant='h6' color={colors.grey[600]}>Crie tarefas e organize seus itens a fazer</Typography> */}
 
-                <CardTarefa texto={tasksi} />
 
+
+                {tasks.map(dados => (
+
+                  <CardTarefa texto={dados.description} />
+                ))}
 
               </CardContent>
             </Card>
