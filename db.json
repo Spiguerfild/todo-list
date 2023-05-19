@@ -1,39 +1,14 @@
 {
   "tasks": [
     {
-      "description": "tarefa 01",
-      "done": "true",
-      "id": 1
-    },
-    {
       "description": "tarefa 2 ne vitao",
       "done": false,
       "id": 2
     },
     {
-      "description": "apenas",
+      "description": "oi",
       "done": false,
       "id": 3
-    },
-    {
-      "description": "wd",
-      "done": false,
-      "id": 4
-    },
-    {
-      "description": "",
-      "done": false,
-      "id": 5
-    },
-    {
-      "description": "",
-      "done": false,
-      "id": 6
-    },
-    {
-      "description": "",
-      "done": false,
-      "id": 7
     }
   ]
 }

@@ -1,11 +1,15 @@
 
-import { useTheme, TextField, Grid, AppBar, Toolbar, Typography, Container, Button, colors, Card, CardContent, Badge, Checkbox } from '@mui/material';
+import {
+  useTheme, TextField, Grid, AppBar, Toolbar, Typography, Container,
+  Button, colors, Card, CardContent, Badge,
+} from '@mui/material';
 import { ClipboardText, PlusCircle, Rocket } from "@phosphor-icons/react";
 import { styled } from '@mui/material/styles';
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { CardTarefa } from './CardTarefa/inde.tsx';
 import { Task } from './types/index.ts';
 import { api, getAll, save } from './service/api';
+
 
 
 
@@ -33,16 +37,15 @@ const CssTextField = styled(TextField)({
 
 
 function App() {
-  const theme = useTheme()
+  const theme = useTheme();
 
 
 
-  const [tasks, setTasks] = useState<Task[]>([])
-
+  const [tasks, setTasks] = useState<Task[]>([]);
 
   useEffect(() => {
     const listDados = async () => {
-      setTasks(await getAll())
+      setTasks(await getAll());
     }
     listDados()
 
@@ -61,15 +64,9 @@ function App() {
     setTasks([...tasks, newTask]);
   }
 
-  // const pegaDados = async () => {
-  //   try {
-  //     const { data } = await api.get('tasks');
-  //     setTasks(data);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
-
+const handleDelete = () =>{
+  
+}
 
 
   console.log(tasks)
@@ -194,10 +191,16 @@ function App() {
 
 
 
-                {tasks.map(dados => (
 
-                  <CardTarefa texto={dados.description} />
+
+                {tasks.map(dados => (
+                  <CardTarefa idProp={dados.id} texto={dados.description} />
                 ))}
+
+
+
+
+
 
               </CardContent>
             </Card>
