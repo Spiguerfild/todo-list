@@ -117,10 +117,17 @@ function App() {
               <Grid item xl={2} xs={12} >
                 <Button variant='contained' name='tasks' type='submit' fullWidth sx={{
                   height: '100%',
+                  border: '2px solid black',
+                  padding: ' 0 5px 0 5px',
                   backgroundColor: '#52b2ec',
+                  justifyContent: 'space-evenly',
+                  fontWeight: '600',
+                  fontSize: '17px',
                   '&:hover': {
-                    backgroundColor: '#2b7aab',
-                    transition: '.4s',
+                    backgroundColor: '#5e60ce',
+                    transition: '.5s',
+
+
                   }
                 }}>Create <PlusCircle size={30} /></Button>
               </Grid>
@@ -144,7 +151,7 @@ function App() {
                   padding: '10px'
                 },
 
-              }} >  </Badge>
+              }} > {tasks.length} </Badge>
             </div>
           </div>
           <div>
