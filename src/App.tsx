@@ -2,7 +2,7 @@
 import { useTheme, TextField, Grid, AppBar, Toolbar, Typography, Container, Button, colors, Card, CardContent, Badge, Checkbox } from '@mui/material';
 import { ClipboardText, PlusCircle, Rocket } from "@phosphor-icons/react";
 import { styled } from '@mui/material/styles';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { CardTarefa } from './CardTarefa/inde.tsx';
 import { Task } from './types/index.ts';
 import { api, getAll, save } from './service/api';
@@ -36,31 +36,38 @@ function App() {
   const theme = useTheme()
 
 
-  const [tasksi, setTasksi] = useState<string>('');
+
   const [tasks, setTasks] = useState<Task[]>([])
-  const [teste, setTeste] = useState<any>()
+
 
   useEffect(() => {
-    pegaDados();
-  }, [teste]);
+    const listDados = async () => {
+      setTasks(await getAll())
+    }
+    listDados()
 
-  const saveNoBanco = () => {
-    const tsk = {
-      description: tasksi,
+  }, []);
+
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    let description: string = event.currentTarget.taskDescription.value
+    let newTask: Task = {
+      description,
       done: false
     }
-    setTeste(tsk)
-    save(tsk);
+
+    save(newTask)
   }
 
-  const pegaDados = async () => {
-    try {
-      const { data } = await api.get('tasks');
-      setTasks(data);
-    } catch (error) {
-      console.log(error);
-    }
-  }
+  // const pegaDados = async () => {
+  //   try {
+  //     const { data } = await api.get('tasks');
+  //     setTasks(data);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }
 
 
 
@@ -92,30 +99,34 @@ function App() {
         </Toolbar>
       </AppBar>
       <main>
-        <Container sx={{ position: 'relative', }}>
-          <Grid container spacing={2} sx={{
-            position: 'absolute',
-            top: '-26px'
-          }}>
-            <Grid item xl={10} xs={12}>
-              <CssTextField name='tasks' variant='outlined' label='Task' onChange={(e: ChangeEvent<HTMLInputElement>) => setTasksi(e.target.value)} placeholder='Adicione uma Nova tarefa' fullWidth sx={{
-                backgroundColor: colors.grey[900],
+        <form onSubmit={handleSubmit}>
+          <Container sx={{ position: 'relative', }}>
+            <Grid container spacing={2} sx={{
+              position: 'absolute',
+              top: '-26px'
+            }}>
 
-              }} />
-            </Grid>
-            <Grid item xl={2} xs={12} >
-              <Button variant='contained' name='tasks' onClick={saveNoBanco} fullWidth sx={{
-                height: '100%',
-                backgroundColor: '#52b2ec',
-                '&:hover': {
-                  backgroundColor: '#2b7aab',
-                  transition: '.4s',
-                }
-              }}>Create <PlusCircle size={30} /></Button>
-            </Grid>
-          </Grid>
-        </Container>
+              <Grid item xl={10} xs={12}>
 
+                <CssTextField name='tasks' variant='outlined' label='Task' placeholder='Adicione uma Nova tarefa' fullWidth sx={{
+                  backgroundColor: colors.grey[900],
+
+                }} />
+              </Grid>
+              <Grid item xl={2} xs={12} >
+                <Button variant='contained' name='tasks' type='submit' fullWidth sx={{
+                  height: '100%',
+                  backgroundColor: '#52b2ec',
+                  '&:hover': {
+                    backgroundColor: '#2b7aab',
+                    transition: '.4s',
+                  }
+                }}>Create <PlusCircle size={30} /></Button>
+              </Grid>
+
+            </Grid>
+          </Container>
+        </form>
 
       </main>
       <Container sx={{ paddingTop: '100px' }}>

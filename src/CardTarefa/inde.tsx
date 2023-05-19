@@ -12,7 +12,7 @@ export function CardTarefa({ texto }: CardTarefaProps) {
 
   return (
     <>
-      <Card sx={{ width: '90%' }}>
+      <Card sx={{ width: '90%', marginBottom: '20px', border: '1px solid #ffffff' }}>
         <CardContent sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', }}>
           <Checkbox defaultChecked />
           <Typography m={0} variant="h6" gutterBottom>
