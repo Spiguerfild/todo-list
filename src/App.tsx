@@ -58,6 +58,7 @@ function App() {
     }
 
     save(newTask)
+    setTasks([...tasks, newTask]);
   }
 
   // const pegaDados = async () => {
@@ -108,7 +109,7 @@ function App() {
 
               <Grid item xl={10} xs={12}>
 
-                <CssTextField name='tasks' variant='outlined' label='Task' placeholder='Adicione uma Nova tarefa' fullWidth sx={{
+                <CssTextField name="taskDescription" variant='outlined' label='Task' placeholder='Adicione uma Nova tarefa' fullWidth sx={{
                   backgroundColor: colors.grey[900],
 
                 }} />
