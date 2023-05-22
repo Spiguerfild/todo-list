@@ -5,10 +5,10 @@ import {
 } from '@mui/material';
 import { ClipboardText, PlusCircle, Rocket } from "@phosphor-icons/react";
 import { styled } from '@mui/material/styles';
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import { CardTarefa } from './CardTarefa/inde.tsx';
 import { Task } from './types/index.ts';
-import { api, getAll, save } from './service/api';
+import { exclude, getAll, save, update } from './service/api';
 
 
 
@@ -39,174 +39,230 @@ const CssTextField = styled(TextField)({
 function App() {
   const theme = useTheme();
 
-
-
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [tasksConclueds, setTasksConclueds] = useState<number>(0)
 
   useEffect(() => {
-    const listDados = async () => {
-      setTasks(await getAll());
-    }
+
     listDados()
 
   }, []);
 
+  const listDados = async () => {
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    const listTaks = await getAll();
+
+    setTasksConclueds(() => {
+      return 0;
+    })
+
+    listTaks.map((task: Task) => {
+
+      if (task.done) {
+
+        setTasksConclueds((prev) => {
+          return prev + 1;
+        })
+
+      }
+    })
+
+    setTasks(listTaks);
+  }
+
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     let description: string = event.currentTarget.taskDescription.value
     let newTask: Task = {
-      description,
-      done: false
+      description: description,
+      done: false,
     }
 
-    save(newTask)
-    setTasks([...tasks, newTask]);
+    const task = await save(newTask)
+    setTasks([...tasks, task]);
   }
 
-const handleDelete = () =>{
-  
-}
+  const handleDelete = async (id: number) => {
 
+    if (undefined || null) return;
+
+    await exclude(id);
+
+    listDados()
+
+  }
+
+  const handleUpdate = async (task: Task) => {
+    await update(task);
+    listDados()
+  }
 
   console.log(tasks)
   return (
-
     <>
-      {/* {console.log(tasksi)} */}
-      <AppBar position='static'>
-        <Toolbar sx={{
-          paddingTop: theme.spacing(2),
-          paddingBottom: theme.spacing(2),
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          '@media all': {
 
-            minHeight: 200,
-          }
-        }}>
 
-          <Typography variant="h5" component="h6" sx={{
+      <>
+        <AppBar position='static'>
+          <Toolbar sx={{
+            paddingTop: theme.spacing(2),
+            paddingBottom: theme.spacing(2),
             display: 'flex',
+            justifyContent: 'center',
             alignItems: 'center',
-            gap: theme.spacing(2)
+            '@media all': {
+
+              minHeight: 200,
+            }
           }}>
-            <Rocket size={60} color='#5e60ce' /><p style={{ color: '#5e60ce', fontWeight: '900', fontSize: '50px' }}> <span style={{ color: '#52b2ec' }}>to</span>do</p>
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      <main>
-        <form onSubmit={handleSubmit}>
-          <Container sx={{ position: 'relative', }}>
-            <Grid container spacing={2} sx={{
-              position: 'absolute',
-              top: '-26px'
+
+
+            <Typography variant="h5" component="h6" sx={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: theme.spacing(2)
             }}>
-
-              <Grid item xl={10} xs={12}>
-
-                <CssTextField name="taskDescription" variant='outlined' label='Task' placeholder='Adicione uma Nova tarefa' fullWidth sx={{
-                  backgroundColor: colors.grey[900],
-
-                }} />
-              </Grid>
-              <Grid item xl={2} xs={12} >
-                <Button variant='contained' name='tasks' type='submit' fullWidth sx={{
-                  height: '100%',
-                  border: '2px solid black',
-                  padding: ' 0 5px 0 5px',
-                  backgroundColor: '#52b2ec',
-                  justifyContent: 'space-evenly',
-                  fontWeight: '600',
-                  fontSize: '17px',
-                  '&:hover': {
-                    backgroundColor: '#5e60ce',
-                    transition: '.5s',
-
-
-                  }
-                }}>Create <PlusCircle size={30} /></Button>
-              </Grid>
-
-            </Grid>
-          </Container>
-        </form>
-
-      </main>
-      <Container sx={{ paddingTop: '100px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', margin: '0px 18px 30px 0px' }}>
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '30px' }}>
-              <span style={{ color: '#52b2ec', fontSize: '20px', fontWeight: '600' }} >
-                Tarefas criadas
-              </span>
-              <Badge sx={{
-                '& .MuiBadge-badge': {
-                  backgroundColor: '#383838', // Aqui você pode definir a cor de fundo desejada para o span interno
-                  textAlign: 'center',
-                  padding: '10px'
-                },
-
-              }} > {tasks.length} </Badge>
-            </div>
-          </div>
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '30px' }}>
-              <span style={{ color: '#5e60ce', fontSize: '20px', fontWeight: '600' }}>
-                Concluidas
-              </span>
-              <Badge sx={{
-                '& .MuiBadge-badge': {
-                  backgroundColor: '#383838', // Aqui você pode definir a cor de fundo desejada para o span interno
-                  textAlign: 'center',
-                  padding: '10px'
-                }
-              }} >  </Badge>
-            </div>
-          </div>
-        </div>
-        <Grid container spacing={theme.spacing(1)} >
-          <Grid item xl={12} xs={12}>
-            <Card sx={{
-              minWidth: 275,
-              width: '100%',
-              height: '55vh',
-              borderRadius: '10px',
-              boxShadow: '0px 2px 10px 0px #343434'
-            }}>
-              <CardContent sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                height: '100%',
-                backgroundColor: '#121212'
+              <Rocket size={60} color='#5e60ce' /><p style={{ color: '#5e60ce', fontWeight: '900', fontSize: '50px' }}> <span style={{ color: '#52b2ec' }}>to</span>do</p>
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        <main>
+          <form onSubmit={handleSubmit}>
+            <Container sx={{ position: 'relative', }}>
+              <Grid container spacing={2} sx={{
+                position: 'absolute',
+                top: '-26px'
               }}>
 
-                {/* 
-                <ClipboardText size={80} color={colors.grey[500]} />
-                <Typography variant='h6' color={colors.grey[600]}>Você ainda não tem tarefas cadastradas</Typography>
-                <Typography variant='h6' color={colors.grey[600]}>Crie tarefas e organize seus itens a fazer</Typography> */}
+                <Grid item xl={10} xs={12}>
+
+                  <CssTextField name="taskDescription" variant='outlined' label='Task' placeholder='Adicione uma Nova tarefa' fullWidth sx={{
+                    backgroundColor: colors.grey[900],
+
+                  }} />
+                </Grid>
+                <Grid item xl={2} xs={12} >
+                  <Button variant='contained' name='tasks' type='submit' fullWidth sx={{
+                    height: '100%',
+                    border: '2px solid black',
+                    padding: ' 0 5px 0 5px',
+                    backgroundColor: '#52b2ec',
+                    justifyContent: 'space-evenly',
+                    fontWeight: '600',
+                    fontSize: '17px',
+                    '&:hover': {
+                      backgroundColor: '#5e60ce',
+                      transition: '.5s',
 
 
+                    }
+                  }}>Create <PlusCircle size={30} /></Button>
+                </Grid>
+
+              </Grid>
+            </Container>
+          </form>
+
+        </main>
+        <Container sx={{ paddingTop: '100px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', margin: '0px 18px 30px 0px' }}>
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '30px' }}>
+                <span style={{ color: '#52b2ec', fontSize: '20px', fontWeight: '600' }} >
+                  Tarefas criadas
+                </span>
+                <Badge sx={{
+                  '& .MuiBadge-badge': {
+                    backgroundColor: '#383838', // Aqui você pode definir a cor de fundo desejada para o span interno
+                    textAlign: 'center',
+                    padding: '10px'
+                  },
+
+                }} > {tasks.length} </Badge>
+              </div>
+            </div>
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '30px' }}>
+                <span style={{ color: '#5e60ce', fontSize: '20px', fontWeight: '600' }}>
+                  Concluidas
+                </span>
+                <Badge sx={{
+                  '& .MuiBadge-badge': {
+                    backgroundColor: '#383838', // Aqui você pode definir a cor de fundo desejada para o span interno
+                    textAlign: 'center',
+                    padding: '10px'
+                  }
+                }} > {tasksConclueds} </Badge>
+              </div>
+            </div>
+          </div>
+          {
+            tasks.length === 0 ?
+              <Container >
+                <Grid container spacing={theme.spacing(1)} >
+                  <Grid item xl={12} xs={12}>
+                    <Card sx={{
+                      minWidth: 275,
+                      width: '100%',
+                      height: '55vh',
+                      borderRadius: '10px',
+                      boxShadow: '0px 2px 10px 0px #343434'
+                    }}>
+                      <CardContent sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        height: '100%',
+                        backgroundColor: '#121212'
+                      }}>
+                        <ClipboardText size={80} color={colors.grey[600]} />
+                        <Typography variant='h6' color={colors.grey[600]}>Você ainda não tem tarefas cadastradas</Typography>
+                        <Typography variant='h6' color={colors.grey[600]}>Crie tarefas e organize seus itens a fazer</Typography>
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                </Grid>
+              </Container >
+              :
+              <Grid container spacing={theme.spacing(1)} >
+                <Grid item xl={12} xs={12}>
+                  <Card sx={{
+                    minWidth: 275,
+                    width: '100%',
+                    height: '55vh',
+                    borderRadius: '10px',
+                    boxShadow: '0px 2px 10px 0px #343434'
+                  }}>
+                    <CardContent sx={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      height: '100%',
+                      backgroundColor: '#121212'
+                    }}>
 
 
+                      {tasks.map(dados => {
+                        return (
+                          <CardTarefa
+                            key={dados.id}
+                            task={dados}
+                            onDelete={handleDelete}
+                            onUpdate={handleUpdate}
+                          />
+                        )
+                      })}
+                    </CardContent>
+                  </Card>
+                </Grid>
+              </Grid>
+          }
+        </Container >
+      </>
 
-                {tasks.map(dados => (
-                  <CardTarefa idProp={dados.id} texto={dados.description} />
-                ))}
-
-
-
-
-
-
-              </CardContent>
-            </Card>
-          </Grid>
-        </Grid>
-      </Container >
     </>
   )
 }
