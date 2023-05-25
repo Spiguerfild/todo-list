@@ -16,12 +16,13 @@ type CardTarefaProps = {
   task: Task,
   onDelete: (id: number) => void;
   onUpdate: (task: Task) => void;
+  teste: (id: number) => void;
 }
 
 
 
 
-export function CardTarefa({ task, onDelete, onUpdate }: CardTarefaProps) {
+export function CardTarefa({ task, onDelete, onUpdate, teste }: CardTarefaProps) {
 
   if (!task.id) return null;
 
@@ -45,7 +46,7 @@ export function CardTarefa({ task, onDelete, onUpdate }: CardTarefaProps) {
             {task.description}
           </Typography>
 
-          <Button variant='contained' onClick={() => onDelete(Number(task.id))} sx={{ textAlign: 'center', height: '100px', border: '1px solid #52b2ec ' }}><DeleteIcon /></Button>
+          <Button variant='contained' onClick={() => onDelete(Number(task.id))} sx={{ textAlign: 'center', height: '100px', border: '1px solid #52b2ec ' }}><DeleteIcon sx={{ fontSize: '30px' }} /></Button>
         </CardContent>
       </Card>
     </>

@@ -1,7 +1,7 @@
 
 import {
   useTheme, TextField, Grid, AppBar, Toolbar, Typography, Container,
-  Button, colors, Card, CardContent, Badge, LinearProgress, Stack, CircularProgress,
+  Button, colors, Card, CardContent, Badge, LinearProgress, Stack, CircularProgress, Dialog, DialogTitle, DialogContentText, DialogContent, DialogActions,
 } from '@mui/material';
 import { ClipboardText, PlusCircle, Rocket } from "@phosphor-icons/react";
 import { styled } from '@mui/material/styles';
@@ -42,12 +42,30 @@ function App() {
   const [tasks, setTasks] = useState<Task[]>([]);/*numero de tasks concluidas*/
   const [tasksConclueds, setTasksConclueds] = useState<number>(0) /*numero de tasks concluidas*/
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [open, setOpen] = useState(false);
+  const [isDelete, setIsDelete] = useState(false);
+  const [numbTask, setNumbTask] = useState(0)
 
   useEffect(() => {
 
     listDados() /*puxa os dados do banco uma unica vez*/
 
   }, []);
+
+  useEffect(() => {
+    isDelete ?
+
+      teste(numbTask)
+      :
+      console.log(teste)
+  }, [isDelete])
+
+  const teste = async (number: number) => {
+    await exclude(number);
+    console.log('deletou')
+    listDados()
+  }
+
 
   const listDados = async () => {
 
@@ -97,11 +115,8 @@ function App() {
   const handleDelete = async (id: number) => {
 
     if (undefined || null) return;
-
-    await exclude(id);
-
-    listDados()
-
+    setOpen(true);
+    await setNumbTask(id)
   }
 
   const handleUpdate = async (task: Task) => {
@@ -109,7 +124,24 @@ function App() {
     listDados()
   }
 
-  console.log(tasks)
+
+
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const closeAndVerify = () => {
+    handleClose();
+
+    setIsDelete(true)
+  }
+  const closeAndVerifyCancel = () => {
+    handleClose();
+
+    setIsDelete(false)
+  }
+
   return (
     <>
 
@@ -255,6 +287,64 @@ function App() {
                       backgroundColor: '#121212'
                     }}>
 
+                      {/*====================================================== caixa de dialog==========================================*/}
+                      {tasks.map(dados => {
+                        return (
+                          <Dialog
+
+                            open={open}
+                            onClose={handleClose}
+                            aria-labelledby="alert-dialog-title"
+                            aria-describedby="alert-dialog-description"
+                          >
+                            <DialogTitle id="alert-dialog-title" sx={{ fontSize: '50px', }}>
+                              {"Deletar"}
+                            </DialogTitle>
+                            <DialogContent >
+                              <DialogContentText id="alert-dialog-description" sx={{ color: 'white', maxWidth: '100%', width: '100vw', fontSize: '30px', textAlign: 'center', }}>
+                                Tem certeza que deseja deletar a Tsak : {'\n'} <Typography sx={{
+                                  textAlign: 'center',
+                                  fontWeight: '500',
+                                  fontSize: '25px',
+                                  color: '#FFD700',
+                                  textShadow: '0px 0px 7px #ff7600;',
+                                  letterSpacing: '1px'
+                                }}>{dados.description}</Typography>
+                              </DialogContentText>
+                            </DialogContent>
+                            <DialogActions sx={{ marginTop: '20px' }}>
+
+
+                              <Button variant='contained' autoFocus onClick={closeAndVerifyCancel} sx={{
+                                fontWeight: '600',
+                                fontSize: '15px',
+                                padding: '5px 10px',
+                                textAlign: 'center',
+                                height: '40px',
+                                color: '#fff',
+                                backgroundColor: '#222222',
+                                '&:hover': {
+                                  background: '#000'
+                                }
+                              }}>Cancelar</Button>
+                              <Button variant='contained' autoFocus onClick={closeAndVerify} sx={{
+                                fontWeight: '600',
+                                fontSize: '15px',
+                                textAlign: 'center',
+                                height: '40px',
+                                color: '#fff',
+                                backgroundColor: '#ff0014',
+                                '&:hover': {
+                                  background: '#b30808'
+                                }
+                              }}>DELETAR !</Button>
+
+                            </DialogActions>
+                          </Dialog>
+                        )
+                      })}
+
+                      {/*====================================================== caixa de dialog==========================================*/}
                       {isLoading ?
                         <Stack sx={{
                           width: '100%',
@@ -277,6 +367,7 @@ function App() {
                               task={dados}
                               onDelete={handleDelete}
                               onUpdate={handleUpdate}
+                              teste={teste}
                             />
                           )
                         })}
