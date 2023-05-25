@@ -1,7 +1,7 @@
 
 import {
   useTheme, TextField, Grid, AppBar, Toolbar, Typography, Container,
-  Button, colors, Card, CardContent, Badge,
+  Button, colors, Card, CardContent, Badge, LinearProgress, Stack, CircularProgress,
 } from '@mui/material';
 import { ClipboardText, PlusCircle, Rocket } from "@phosphor-icons/react";
 import { styled } from '@mui/material/styles';
@@ -39,12 +39,13 @@ const CssTextField = styled(TextField)({
 function App() {
   const theme = useTheme();
 
-  const [tasks, setTasks] = useState<Task[]>([]);
-  const [tasksConclueds, setTasksConclueds] = useState<number>(0)
+  const [tasks, setTasks] = useState<Task[]>([]);/*numero de tasks concluidas*/
+  const [tasksConclueds, setTasksConclueds] = useState<number>(0) /*numero de tasks concluidas*/
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   useEffect(() => {
 
-    listDados()
+    listDados() /*puxa os dados do banco uma unica vez*/
 
   }, []);
 
@@ -78,9 +79,19 @@ function App() {
       description: description,
       done: false,
     }
+    setIsLoading(true)
+    try {
 
-    const task = await save(newTask)
-    setTasks([...tasks, task]);
+      const task = await save(newTask)
+      setTasks([...tasks, task]);
+    } catch (error) {
+
+    } finally {
+      setTimeout(() => {
+        setIsLoading(false)
+      }, 1000);
+    }
+
   }
 
   const handleDelete = async (id: number) => {
@@ -244,17 +255,32 @@ function App() {
                       backgroundColor: '#121212'
                     }}>
 
+                      {isLoading ?
+                        <Stack sx={{
+                          width: '100%',
+                          height: '100%',
+                          color: '#5e60ce',
+                          display: 'flex',
+                          flexDirection: 'row-reverse',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: 5,
+                          filter: 'blur(.5px)'
+                        }} spacing={2}>
+                          <Typography textAlign={'center'} pt={2} variant='h2' sx={{ color: '#6164d9' }}>Carregando aguarde...</Typography>
+                          <CircularProgress sx={{ color: '#6164d9' }} size={100} />
+                        </Stack> :
+                        tasks.map(dados => {
+                          return (
+                            <CardTarefa
+                              key={dados.id}
+                              task={dados}
+                              onDelete={handleDelete}
+                              onUpdate={handleUpdate}
+                            />
+                          )
+                        })}
 
-                      {tasks.map(dados => {
-                        return (
-                          <CardTarefa
-                            key={dados.id}
-                            task={dados}
-                            onDelete={handleDelete}
-                            onUpdate={handleUpdate}
-                          />
-                        )
-                      })}
                     </CardContent>
                   </Card>
                 </Grid>
