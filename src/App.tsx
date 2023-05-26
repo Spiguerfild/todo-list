@@ -45,6 +45,7 @@ function App() {
   const [open, setOpen] = useState(false);
   const [isDelete, setIsDelete] = useState(false);
   const [numbTask, setNumbTask] = useState(0)
+  const [clearTxt, setClearTxt] = useState('')
 
   useEffect(() => {
 
@@ -52,20 +53,23 @@ function App() {
 
   }, []);
 
-  useEffect(() => {
-    isDelete ?
+  // useEffect(() => {
+  //   isDelete ?
 
-      teste(numbTask)
-      :
-      console.log(teste)
-  }, [isDelete])
+  //     teste(numbTask)
+  //     :
+  //     console.log(teste)
+  // }, [isDelete])
 
   const teste = async (number: number) => {
     await exclude(number);
     console.log('deletou')
     listDados()
+    setIsDelete(false)
   }
-
+  if (isDelete === true) {
+    teste(numbTask)
+  }
 
   const listDados = async () => {
 
@@ -92,9 +96,9 @@ function App() {
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    let description: string = event.currentTarget.taskDescription.value
+
     let newTask: Task = {
-      description: description,
+      description: clearTxt,
       done: false,
     }
     setIsLoading(true)
@@ -102,8 +106,9 @@ function App() {
 
       const task = await save(newTask)
       setTasks([...tasks, task]);
+      setClearTxt('')
     } catch (error) {
-
+      console.log(error)
     } finally {
       setTimeout(() => {
         setIsLoading(false)
@@ -116,7 +121,11 @@ function App() {
 
     if (undefined || null) return;
     setOpen(true);
+
     await setNumbTask(id)
+
+
+
   }
 
   const handleUpdate = async (task: Task) => {
@@ -180,10 +189,16 @@ function App() {
 
                 <Grid item xl={10} xs={12}>
 
-                  <CssTextField name="taskDescription" variant='outlined' label='Task' placeholder='Adicione uma Nova tarefa' fullWidth sx={{
-                    backgroundColor: colors.grey[900],
+                  <CssTextField name="taskDescription"
+                    onChange={(event) => setClearTxt(event.currentTarget.value)}
+                    value={clearTxt}
+                    variant='outlined'
+                    label='Task'
+                    placeholder='Adicione uma Nova tarefa'
+                    fullWidth sx={{
+                      backgroundColor: colors.grey[900],
+                    }} />
 
-                  }} />
                 </Grid>
                 <Grid item xl={2} xs={12} >
                   <Button variant='contained' name='tasks' type='submit' fullWidth sx={{
@@ -288,61 +303,64 @@ function App() {
                     }}>
 
                       {/*====================================================== caixa de dialog==========================================*/}
-                      {tasks.map(dados => {
-                        return (
-                          <Dialog
-
-                            open={open}
-                            onClose={handleClose}
-                            aria-labelledby="alert-dialog-title"
-                            aria-describedby="alert-dialog-description"
-                          >
-                            <DialogTitle id="alert-dialog-title" sx={{ fontSize: '50px', }}>
-                              {"Deletar"}
-                            </DialogTitle>
-                            <DialogContent >
-                              <DialogContentText id="alert-dialog-description" sx={{ color: 'white', maxWidth: '100%', width: '100vw', fontSize: '30px', textAlign: 'center', }}>
-                                Tem certeza que deseja deletar a Tsak : {'\n'} <Typography sx={{
-                                  textAlign: 'center',
-                                  fontWeight: '500',
-                                  fontSize: '25px',
-                                  color: '#FFD700',
-                                  textShadow: '0px 0px 7px #ff7600;',
-                                  letterSpacing: '1px'
-                                }}>{dados.description}</Typography>
-                              </DialogContentText>
-                            </DialogContent>
-                            <DialogActions sx={{ marginTop: '20px' }}>
 
 
-                              <Button variant='contained' autoFocus onClick={closeAndVerifyCancel} sx={{
-                                fontWeight: '600',
-                                fontSize: '15px',
-                                padding: '5px 10px',
-                                textAlign: 'center',
-                                height: '40px',
-                                color: '#fff',
-                                backgroundColor: '#222222',
-                                '&:hover': {
-                                  background: '#000'
-                                }
-                              }}>Cancelar</Button>
-                              <Button variant='contained' autoFocus onClick={closeAndVerify} sx={{
-                                fontWeight: '600',
-                                fontSize: '15px',
-                                textAlign: 'center',
-                                height: '40px',
-                                color: '#fff',
-                                backgroundColor: '#ff0014',
-                                '&:hover': {
-                                  background: '#b30808'
-                                }
-                              }}>DELETAR !</Button>
+                      <Dialog
 
-                            </DialogActions>
-                          </Dialog>
-                        )
-                      })}
+                        open={open}
+                        onClose={handleClose}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                      >
+                        <DialogTitle id="alert-dialog-title" sx={{ fontSize: '50px', }}>
+                          {"Deletar"}
+                        </DialogTitle>
+                        <DialogContent >
+                          <DialogContentText id="alert-dialog-description" sx={{ color: 'white', maxWidth: '100%', width: '100vw', fontSize: '30px', textAlign: 'center', }}>
+                            Tem certeza que deseja deletar a Tsak : {'\n'}
+
+                            <Typography sx={{
+                              textAlign: 'center',
+                              fontWeight: '500',
+                              fontSize: '25px',
+                              color: '#FFD700',
+                              textShadow: '0px 0px 7px #ff7600;',
+                              letterSpacing: '1px'
+                            }}>{tasks[numbTask - 1].description}</Typography>
+
+                          </DialogContentText>
+                        </DialogContent>
+                        <DialogActions sx={{ marginTop: '20px' }}>
+
+
+                          <Button variant='contained' autoFocus onClick={closeAndVerifyCancel} sx={{
+                            fontWeight: '600',
+                            fontSize: '15px',
+                            padding: '5px 10px',
+                            textAlign: 'center',
+                            height: '40px',
+                            color: '#fff',
+                            backgroundColor: '#222222',
+                            '&:hover': {
+                              background: '#000'
+                            }
+                          }}>Cancelar</Button>
+                          <Button variant='contained' autoFocus onClick={closeAndVerify} sx={{
+                            fontWeight: '600',
+                            fontSize: '15px',
+                            textAlign: 'center',
+                            height: '40px',
+                            color: '#fff',
+                            backgroundColor: '#ff0014',
+                            '&:hover': {
+                              background: '#b30808'
+                            }
+                          }}>DELETAR !</Button>
+
+                        </DialogActions>
+                      </Dialog>
+
+
 
                       {/*====================================================== caixa de dialog==========================================*/}
                       {isLoading ?
@@ -367,7 +385,7 @@ function App() {
                               task={dados}
                               onDelete={handleDelete}
                               onUpdate={handleUpdate}
-                              teste={teste}
+
                             />
                           )
                         })}

@@ -16,13 +16,13 @@ type CardTarefaProps = {
   task: Task,
   onDelete: (id: number) => void;
   onUpdate: (task: Task) => void;
-  teste: (id: number) => void;
+
 }
 
 
 
 
-export function CardTarefa({ task, onDelete, onUpdate, teste }: CardTarefaProps) {
+export function CardTarefa({ task, onDelete, onUpdate, }: CardTarefaProps) {
 
   if (!task.id) return null;
 
