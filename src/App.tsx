@@ -223,7 +223,7 @@ function App() {
           </form>
 
         </main>
-        <Container sx={{ paddingTop: '100px' }}>
+        <Container sx={{ paddingTop: '100px', marginBottom: '50px' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', margin: '0px 18px 30px 0px' }}>
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '30px' }}>
@@ -291,7 +291,8 @@ function App() {
                     width: '100%',
                     height: '55vh',
                     borderRadius: '10px',
-                    boxShadow: '0px 2px 10px 0px #343434'
+                    boxShadow: '0px 2px 10px 0px #343434',
+
                   }}>
                     <CardContent sx={{
                       display: 'flex',
@@ -299,7 +300,8 @@ function App() {
                       alignItems: 'center',
                       justifyContent: 'center',
                       height: '100%',
-                      backgroundColor: '#121212'
+                      backgroundColor: '#121212',
+
                     }}>
 
                       {/*====================================================== caixa de dialog==========================================*/}
@@ -317,7 +319,7 @@ function App() {
                         </DialogTitle>
                         <DialogContent >
                           <DialogContentText id="alert-dialog-description" sx={{ color: 'white', maxWidth: '100%', width: '100vw', fontSize: '30px', textAlign: 'center', }}>
-                            Tem certeza que deseja deletar a Tsak : {'\n'}
+                            Tem certeza que deseja deletar a Task : {'\n'}
 
                             <Typography sx={{
                               textAlign: 'center',
@@ -326,7 +328,7 @@ function App() {
                               color: '#FFD700',
                               textShadow: '0px 0px 7px #ff7600;',
                               letterSpacing: '1px'
-                            }}>{tasks[numbTask - 1].description}</Typography>
+                            }}>{tasks[numbTask - 1]?.description}</Typography>
 
                           </DialogContentText>
                         </DialogContent>
