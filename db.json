@@ -1,24 +1,3 @@
 {
-  "tasks": [
-    {
-      "description": "arroz",
-      "done": false,
-      "id": 1
-    },
-    {
-      "description": "",
-      "done": false,
-      "id": 2
-    },
-    {
-      "description": "",
-      "done": false,
-      "id": 3
-    },
-    {
-      "description": "",
-      "done": false,
-      "id": 4
-    }
-  ]
+  "tasks": []
 }

@@ -67,6 +67,7 @@ function App() {
     listDados()
     setIsDelete(false)
   }
+
   if (isDelete === true) {
     teste(numbTask)
   }
@@ -134,8 +135,6 @@ function App() {
   }
 
 
-
-
   const handleClose = () => {
     setOpen(false);
   };
@@ -153,9 +152,7 @@ function App() {
 
   return (
     <>
-
-
-      <>
+      <div>
         <AppBar position='static'>
           <Toolbar sx={{
             paddingTop: theme.spacing(2),
@@ -164,7 +161,6 @@ function App() {
             justifyContent: 'center',
             alignItems: 'center',
             '@media all': {
-
               minHeight: 200,
             }
           }}>
@@ -179,15 +175,18 @@ function App() {
             </Typography>
           </Toolbar>
         </AppBar>
+
+
         <main>
           <form onSubmit={handleSubmit}>
             <Container sx={{ position: 'relative', }}>
               <Grid container spacing={2} sx={{
                 position: 'absolute',
-                top: '-26px'
+                top: '-26px',
+                padding: '0 50px'
               }}>
 
-                <Grid item xl={10} xs={12}>
+                <Grid item xs={12} sm={10} md={10} lg={10} xl={10}>
 
                   <CssTextField name="taskDescription"
                     onChange={(event) => setClearTxt(event.currentTarget.value)}
@@ -200,7 +199,7 @@ function App() {
                     }} />
 
                 </Grid>
-                <Grid item xl={2} xs={12} >
+                <Grid item xs={12} sm={2} md={2} lg={2} xl={2}>
                   <Button variant='contained' name='tasks' type='submit' fullWidth sx={{
                     height: '100%',
                     border: '2px solid black',
@@ -208,14 +207,12 @@ function App() {
                     backgroundColor: '#52b2ec',
                     justifyContent: 'space-evenly',
                     fontWeight: '600',
-                    fontSize: '17px',
+                    fontSize: '15px',
                     '&:hover': {
                       backgroundColor: '#5e60ce',
                       transition: '.5s',
-
-
                     }
-                  }}>Create <PlusCircle size={30} /></Button>
+                  }}>Create </Button>
                 </Grid>
 
               </Grid>
@@ -224,36 +221,47 @@ function App() {
 
         </main>
         <Container sx={{ paddingTop: '100px', marginBottom: '50px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', margin: '0px 18px 30px 0px' }}>
-            <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '30px' }}>
-                <span style={{ color: '#52b2ec', fontSize: '20px', fontWeight: '600' }} >
-                  Tarefas criadas
-                </span>
-                <Badge sx={{
-                  '& .MuiBadge-badge': {
-                    backgroundColor: '#383838', // Aqui você pode definir a cor de fundo desejada para o span interno
-                    textAlign: 'center',
-                    padding: '10px'
-                  },
+          <div style={{
+            display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+            width: '98%'
+          }}>
+            <Grid container spacing={2}>
 
-                }} > {tasks.length} </Badge>
-              </div>
-            </div>
-            <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '30px' }}>
-                <span style={{ color: '#5e60ce', fontSize: '20px', fontWeight: '600' }}>
-                  Concluidas
-                </span>
-                <Badge sx={{
-                  '& .MuiBadge-badge': {
-                    backgroundColor: '#383838', // Aqui você pode definir a cor de fundo desejada para o span interno
-                    textAlign: 'center',
-                    padding: '10px'
-                  }
-                }} > {tasksConclueds} </Badge>
-              </div>
-            </div>
+              <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
+                <div>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '15px', padding: '10px' }}>
+                    <span style={{ color: '#52b2ec', fontSize: '20px', fontWeight: '600' }} >
+                      Tarefas criadas
+                    </span>
+                    <Badge sx={{
+                      '& .MuiBadge-badge': {
+                        backgroundColor: '#383838', // Aqui você pode definir a cor de fundo desejada para o span interno
+                        textAlign: 'center',
+                        padding: '10px'
+                      },
+
+                    }} > {tasks.length} </Badge>
+                  </div>
+                </div>
+              </Grid>
+              <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
+
+                <div>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '15px' }}>
+                    <span style={{ color: '#5e60ce', fontSize: '20px', fontWeight: '600' }}>
+                      Concluidas
+                    </span>
+                    <Badge sx={{
+                      '& .MuiBadge-badge': {
+                        backgroundColor: '#383838', // Aqui você pode definir a cor de fundo desejada para o span interno
+                        textAlign: 'center',
+                        padding: '10px'
+                      }
+                    }} > {tasksConclueds} </Badge>
+                  </div>
+                </div>
+              </Grid>
+            </Grid>
           </div>
           {
             tasks.length === 0 ?
@@ -306,9 +314,7 @@ function App() {
 
                       {/*====================================================== caixa de dialog==========================================*/}
 
-
                       <Dialog
-
                         open={open}
                         onClose={handleClose}
                         aria-labelledby="alert-dialog-title"
@@ -332,9 +338,8 @@ function App() {
 
                           </DialogContentText>
                         </DialogContent>
+
                         <DialogActions sx={{ marginTop: '20px' }}>
-
-
                           <Button variant='contained' autoFocus onClick={closeAndVerifyCancel} sx={{
                             fontWeight: '600',
                             fontSize: '15px',
@@ -358,7 +363,6 @@ function App() {
                               background: '#b30808'
                             }
                           }}>DELETAR !</Button>
-
                         </DialogActions>
                       </Dialog>
 
@@ -369,7 +373,7 @@ function App() {
                         <Stack sx={{
                           width: '100%',
                           height: '100%',
-                          color: '#5e60ce',
+                          color: '#52abd3',
                           display: 'flex',
                           flexDirection: 'row-reverse',
                           alignItems: 'center',
@@ -377,8 +381,8 @@ function App() {
                           gap: 5,
                           filter: 'blur(.5px)'
                         }} spacing={2}>
-                          <Typography textAlign={'center'} pt={2} variant='h2' sx={{ color: '#6164d9' }}>Carregando aguarde...</Typography>
-                          <CircularProgress sx={{ color: '#6164d9' }} size={100} />
+                          <Typography textAlign={'center'} pt={2} variant='h2' sx={{ fontSize: '30px', color: '#52abd3' }}>Carregando aguarde...</Typography>
+                          <CircularProgress sx={{ color: '#52abd3' }} size={40} />
                         </Stack> :
                         tasks.map(dados => {
                           return (
@@ -398,7 +402,7 @@ function App() {
               </Grid>
           }
         </Container >
-      </>
+      </div>
 
     </>
   )
