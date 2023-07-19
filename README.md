@@ -1,6 +1,6 @@
 # todo-list
 ## Para fazer este projeto funcionar na sua maquina faça o seguinte:
-clone este repositório na sua máquina local, depois abra 2 terminais, em um deles vc digite primeiramente:
+clone este repositório na sua máquina local, depois abra 2 terminais, em um deles você digite primeiramente:
 ### npm i   ---------- após isso ---------- digite : node ./server.js
 ### No segundo terminal digite : npm run dev
 #### experimente como é utilizar o app ( : aproveite 
