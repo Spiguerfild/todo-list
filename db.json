@@ -1,3 +1,19 @@
 {
-  "tasks": []
+  "tasks": [
+    {
+      "description": "Tarefa 01",
+      "done": true,
+      "id": 1
+    },
+    {
+      "description": "Tarefa 02 ",
+      "done": false,
+      "id": 2
+    },
+    {
+      "description": "Tarefa 03",
+      "done": true,
+      "id": 3
+    }
+  ]
 }

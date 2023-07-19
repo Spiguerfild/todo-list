@@ -179,9 +179,9 @@ function App() {
 
         <main>
           <form onSubmit={handleSubmit}>
-            <Container sx={{ position: 'relative', }}>
+            <Container sx={{ position: 'relative' }}>
               <Grid container spacing={2} sx={{
-                position: 'absolute',
+                position: 'relative',
                 top: '-26px',
                 padding: '0 50px'
               }}>
@@ -225,11 +225,11 @@ function App() {
             display: 'flex', alignItems: 'center', justifyContent: 'space-between',
             width: '98%'
           }}>
-            <Grid container spacing={2}>
+            <Grid container spacing={2} sx={{ paddingBottom: '10px' }}>
 
               <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
                 <div>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '15px', padding: '10px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '15px' }}>
                     <span style={{ color: '#52b2ec', fontSize: '20px', fontWeight: '600' }} >
                       Tarefas criadas
                     </span>
